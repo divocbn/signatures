@@ -1,0 +1,12 @@
+[submodule "vendors/mem"]
+	path = vendors/mem
+	url = https://github.com/0x1F9F1/mem
+[submodule "vendors/spdlog"]
+	path = vendors/spdlog
+	url = https://github.com/gabime/spdlog
+[submodule "vendors/zydis"]
+	path = vendors/zydis
+	url = https://github.com/zyantific/zydis.git
+[submodule "vendors/lief"]
+	path = vendors/lief
+	url = https://github.com/lief-project/LIEF.git
