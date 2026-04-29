@@ -30,4 +30,5 @@ private:
 
     bool m_IsValid = false;
 };
+
 #endif //SIGNATURES_GAMEBUILD_H

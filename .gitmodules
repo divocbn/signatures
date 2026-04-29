@@ -6,7 +6,7 @@
 	url = https://github.com/gabime/spdlog
 [submodule "vendors/zydis"]
 	path = vendors/zydis
-	url = https://github.com/zyantific/zydis.git
+	url = https://github.com/zyantific/zydis
 [submodule "vendors/lief"]
 	path = vendors/lief
-	url = https://github.com/lief-project/LIEF.git
+	url = https://github.com/lief-project/LIEF
