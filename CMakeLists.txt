@@ -14,6 +14,8 @@ add_executable(signatures
     utils/pe.h
     utils/sigmaker.cpp
     utils/sigmaker.h
+    core/depot.cpp
+    core/depot.h
 )
 
-target_link_libraries(signatures PUBLIC spdlog mem Zydis lyra )
+target_link_libraries(signatures PUBLIC spdlog mem Zydis lyra cpr nlohmann_json)

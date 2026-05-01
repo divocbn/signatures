@@ -16,3 +16,9 @@
 [submodule "vendors/fmt"]
 	path = vendors/fmt
 	url = https://github.com/fmtlib/fmt
+[submodule "vendors/cpr"]
+	path = vendors/cpr
+	url = https://github.com/libcpr/cpr
+[submodule "vendors/json"]
+	path = vendors/json
+	url = https://github.com/nlohmann/json

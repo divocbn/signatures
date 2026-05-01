@@ -11,7 +11,6 @@
 #define SIGNATURES_VERSION_MINOR 0
 #define SIGNATURES_VERSION_PATCH 0
 
-
 class App
 {
 public:

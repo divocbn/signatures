@@ -4,11 +4,14 @@
 
 #include "app.h"
 
+#include "depot.h"
 #include "gamebuild.h"
 #include "spdlog/spdlog.h"
-
 #include "lyra/lyra.hpp"
+
 #include "../utils/sigmaker.h"
+
+#include <filesystem>
 
 void App::Run(int32_t argc, char* argv[])
 {
@@ -28,8 +31,9 @@ void App::Run(int32_t argc, char* argv[])
     if (const auto result = cli.parse({argc, argv}); !result)
     {
         spdlog::error("!! failed to parse arguments!");
-        spdlog::error("    - see:");
-        std::cout << cli << "\n";
+
+        // looks weird with spdlog prefix
+        std::cout << cli << std::endl;
         return;
     }
 
@@ -43,7 +47,44 @@ void App::Run(int32_t argc, char* argv[])
         return;
     }
 
-    const GameBuild game("gta5.exe");
+    // NOTE(module): you can change that here if u want to bring your own dump build depot
+    Depot depot("https://cdn.m0dule.dev/signatures/gta5");
+
+    if (m_Download)
+    {
+        spdlog::info(">> fetching manifest...");
+
+        const auto builds = depot.GetList();
+
+        if (builds.empty())
+        {
+            spdlog::error("!! manifest empty or unreachable");
+            return;
+        }
+
+        spdlog::info(">> available builds:");
+
+        for (const auto b : builds)
+            spdlog::info("   - {}", b);
+
+        spdlog::info(">> downloading build {}", m_Build);
+
+        if (!std::ranges::contains(builds, m_Build))
+        {
+            spdlog::error("!! build {} not in manifest", m_Build);
+            return;
+        }
+
+        if (!depot.Fetch(m_Build, "./builds"))
+        {
+            spdlog::error("!! failed to download build {}", m_Build);
+            return;
+        }
+
+        spdlog::info("++ downloaded successfully to ./builds");
+    }
+
+    const GameBuild game("./builds/" + std::to_string(m_Build) + ".exe");
     if (!game)
     {
         spdlog::info("!! failed to parse game build, please check again.");
