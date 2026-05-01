@@ -1,0 +1,16 @@
+.idea/
+.vscode/
+.cache/
+.vs/
+__pycache__/
+
+cmake-build-*/
+bin/
+build/
+tools/overseer/*.exe
+
+.cache/
+.vs/
+.vscode/
+
+tmp/
