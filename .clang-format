@@ -1,0 +1,35 @@
+Language: Cpp
+IndentWidth: 4
+AccessModifierOffset: -4
+ColumnLimit: 200
+
+SortIncludes: false
+MaxEmptyLinesToKeep: 1
+LambdaBodyIndentation: OuterScope
+NamespaceIndentation: All
+BreakBeforeBraces: Allman
+ReferenceAlignment: Left
+PointerAlignment: Left
+
+AlignAfterOpenBracket: Align
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+AlignEscapedNewlinesLeft: true
+AlignOperands: true
+AlignTrailingComments: true
+
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortBlocksOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AllowShortLambdasOnASingleLine: Inline
+
+AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakAfterReturnType: None
+AlwaysBreakBeforeMultilineStrings: false
+AlwaysBreakTemplateDeclarations: true
+
+# KeepEmptyLinesAtEOF: true
+# BeforeLambdaBody: false

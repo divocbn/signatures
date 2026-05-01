@@ -10,6 +10,10 @@ add_executable(signatures
     core/app.h
     core/gamebuild.cpp
     core/gamebuild.h
+    utils/pe.cpp
+    utils/pe.h
+    utils/sigmaker.cpp
+    utils/sigmaker.h
 )
 
-target_link_libraries(signatures PUBLIC mem spdlog Zydis LIEF::LIEF)
+target_link_libraries(signatures PUBLIC spdlog mem Zydis lyra )

@@ -10,3 +10,9 @@
 [submodule "vendors/lief"]
 	path = vendors/lief
 	url = https://github.com/lief-project/LIEF
+[submodule "vendors/lyra"]
+	path = vendors/lyra
+	url = https://github.com/bfgroup/Lyra.git
+[submodule "vendors/fmt"]
+	path = vendors/fmt
+	url = https://github.com/fmtlib/fmt
