@@ -34,4 +34,4 @@ pattern: 48 ? 04 ? 49 8B D0 ...
 
 ## Note
 
-The build files should be located in the `./builds` directory, unless they are downloaded from the build depot using `--download`.
+The build files should be located in the `./builds` directory, unless they are downloaded from the depot using `--download`.
