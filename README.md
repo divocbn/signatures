@@ -12,7 +12,7 @@ Thanks to [Gogsi](https://github.com/Gogsi) for providing the gamebuild dumps an
 - Reads bytes at a given offset
 - Converts those bytes into a signature pattern using wildcards
 - Prints the resulting pattern for reuse in other builds
-
+  
 ## Example
 
 ```
@@ -24,6 +24,8 @@ Output:
 ```
 pattern: 48 ? 04 ? 49 8B D0 ...
 ```
+
+<img width="796" height="380" alt="image" src="https://github.com/user-attachments/assets/fcf57e27-c428-4584-bde1-dc8e72780964" />
 
 ## Options
 
