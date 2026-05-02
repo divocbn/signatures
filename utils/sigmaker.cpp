@@ -7,6 +7,7 @@
 #include "spdlog/spdlog.h"
 
 #include <sstream>
+#include <mem/pattern.h>
 
 void SigMaker::Scan(const uint8_t* data, const size_t size)
 {
@@ -21,10 +22,7 @@ void SigMaker::Scan(const uint8_t* data, const size_t size)
         ZydisDecodedOperand ops[ZYDIS_MAX_OPERAND_COUNT];
 
         if (!ZYAN_SUCCESS(ZydisDecoderDecodeFull(&m_Decoder, data + offset, size - offset, &inst, ops)))
-        {
-            spdlog::error("failed to decode instruction: {}", reinterpret_cast<uintptr_t>(data + offset));
             break;
-        }
 
         Process(inst, ops, data + offset);
         offset += inst.length;
@@ -48,6 +46,62 @@ std::string SigMaker::GetPattern() const
     }
 
     return oss.str();
+}
+
+// NOTE(module): kinda mimics basically https://github.com/senator715/IDA-Fusion
+//               very... VERY hacky, but just for test purposes, gonna rework that later
+std::string SigMaker::GetUniquePattern(const PE& pe, size_t maxSize)
+{
+    const auto& base = m_Bytes;
+    if (base.empty())
+        return {};
+
+    const auto* data = pe.GetRawData();
+    const size_t size = pe.GetSize();
+
+    const mem::region fullRange(data, size);
+
+    std::string currentBestPattern;
+
+    const size_t limit = std::min({maxSize, base.size()});
+
+    for (size_t len = 1; len <= limit; ++len)
+    {
+        m_Bytes.clear();
+        m_Mask.clear();
+
+        Scan(base.data(), len);
+
+        const std::string pattern = GetPattern();
+        currentBestPattern = pattern;
+
+        const mem::pattern pat(pattern.data());
+
+        size_t matchCount = 0;
+
+        mem::region searchRange(data, size);
+        while (true)
+        {
+            mem::pointer hit = mem::scan(pat, searchRange);
+            if (!hit)
+                break;
+
+            ++matchCount;
+
+            const auto* hitAddr = hit.as<const uint8_t*>();
+            const auto offset = static_cast<size_t>(hitAddr - data);
+
+            if (offset + 1 >= size)
+                break;
+
+            searchRange = mem::region(hitAddr + 1, size - (offset + 1));
+        }
+
+        if (matchCount == 1)
+            return pattern;
+    }
+
+    return currentBestPattern;
 }
 
 void SigMaker::Process(const ZydisDecodedInstruction& inst, const ZydisDecodedOperand* ops, const uint8_t* data)

@@ -10,7 +10,6 @@
 #include <vector>
 #include <string>
 
-
 class PE
 {
 public:
@@ -25,6 +24,11 @@ public:
     [[nodiscard]]
     std::vector<uint8_t> GetBytesAtRva(uint32_t rva, uint32_t size) const;
 
+    [[nodiscard]]
+    const uint8_t* GetRawData() const;
+
+    [[nodiscard]]
+    size_t GetSize() const;
 private:
     struct SectionInfo
     {

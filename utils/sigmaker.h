@@ -5,6 +5,8 @@
 #ifndef SIGNATURES_SIGMAKER_H
 #define SIGNATURES_SIGMAKER_H
 
+#include "pe.h"
+
 #include <Zydis/Zydis.h>
 #include <vector>
 #include <string>
@@ -25,6 +27,8 @@ public:
 
     [[nodiscard]]
     std::string GetPattern() const;
+
+    std::string GetUniquePattern(const PE& pe, size_t maxSize = 64);
 
 private:
     void Process(const ZydisDecodedInstruction& inst,

@@ -122,7 +122,7 @@ void App::Run(int32_t argc, char* argv[])
     SigMaker sig;
     sig.Scan(bytes.data(), bytes.size());
 
-    std::string pattern = sig.GetPattern();
+    std::string pattern = sig.GetUniquePattern(game.GetPe());
 
     spdlog::info("++ pattern: {}", pattern);
 }

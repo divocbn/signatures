@@ -23,6 +23,12 @@ public:
     [[nodiscard]]
     std::string GetBuildName() const;
 
+    [[nodiscard]]
+    PE GetPe() const
+    {
+        return m_Pe;
+    }
+
     explicit operator bool() const
     {
         return m_IsValid;

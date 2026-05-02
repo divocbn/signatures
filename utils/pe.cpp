@@ -39,6 +39,16 @@ std::vector<uint8_t> PE::GetBytesAtRva(const uint32_t rva, const uint32_t size) 
     return std::vector(m_Data.begin() + offset, m_Data.begin() + offset + size);
 }
 
+const uint8_t* PE::GetRawData() const
+{
+    return m_Data.data();
+}
+
+size_t PE::GetSize() const
+{
+    return m_Data.size();
+}
+
 bool PE::ParsePe()
 {
     if (m_Data.size() < sizeof(IMAGE_DOS_HEADER))
@@ -94,3 +104,4 @@ std::optional<std::pair<uint32_t, uint32_t>> PE::RvaToRaw(const uint32_t rva) co
 
     return std::nullopt;
 }
+
