@@ -4,11 +4,12 @@
 
 #ifndef SIGNATURES_APP_H
 #define SIGNATURES_APP_H
+
 #include <cstdint>
 #include <string>
 
 #define SIGNATURES_VERSION_MAJOR 1
-#define SIGNATURES_VERSION_MINOR 0
+#define SIGNATURES_VERSION_MINOR 1
 #define SIGNATURES_VERSION_PATCH 0
 
 class App

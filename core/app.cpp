@@ -12,7 +12,6 @@
 #include "../utils/sigmaker.h"
 
 #include <filesystem>
-
 void App::Run(int32_t argc, char* argv[])
 {
     spdlog::info(">> running signatures v{}.{}.{}!",
@@ -22,28 +21,18 @@ void App::Run(int32_t argc, char* argv[])
         | lyra::opt(m_Build, "number")["-b"]["--build"]
             .required()
             ("Build number (e.g. 3258)")
+
         | lyra::opt(m_OffsetStr, "hex")["-o"]["--offset"]
             .required()
             ("Target offset (hex, e.g. 0x140123456)")
+
         | lyra::opt(m_Download)["-d"]["--download"]
-            ("Download builds");
+            ("Download all builds");
 
     if (const auto result = cli.parse({argc, argv}); !result)
     {
         spdlog::error("!! failed to parse arguments!");
-
-        // looks weird with spdlog prefix
         std::cout << cli << std::endl;
-        return;
-    }
-
-    try
-    {
-        m_Offset = std::stoull(m_OffsetStr, nullptr, 16);
-    }
-    catch (...)
-    {
-        spdlog::error("!! invalid hex offset: {}", m_OffsetStr);
         return;
     }
 
@@ -62,18 +51,53 @@ void App::Run(int32_t argc, char* argv[])
             return;
         }
 
-        spdlog::info(">> available builds:");
+        spdlog::info(">> downloading ALL builds (count: {})", builds.size());
 
-        for (const auto b : builds)
-            spdlog::info("   - {}", b);
-
-        spdlog::info(">> downloading build {}", m_Build);
-
-        if (!std::ranges::contains(builds, m_Build))
+        for (const auto& b : builds)
         {
-            spdlog::error("!! build {} not in manifest", m_Build);
+            spdlog::info(">> downloading build {}", b);
+
+            if (!depot.Fetch(b, "./builds"))
+            {
+                spdlog::error("!! failed to download build {}", b);
+                continue;
+            }
+
+            spdlog::info("++ downloaded build {}", b);
+        }
+
+        spdlog::info("++ all available builds processed");
+        return;
+    }
+
+    try
+    {
+        m_Offset = std::stoull(m_OffsetStr, nullptr, 16);
+    }
+    catch (...)
+    {
+        spdlog::error("!! invalid hex offset: {}", m_OffsetStr);
+        return;
+    }
+
+    const std::filesystem::path buildPath =
+        "./builds/" + std::to_string(m_Build) + ".exe";
+
+    if (!std::filesystem::exists(buildPath))
+    {
+        spdlog::warn("!! build {} does not exist locally", m_Build);
+        spdlog::warn(">> do you want to download it? (y/n)");
+
+        std::string input;
+        std::cin >> input;
+
+        if (input != "y" && input != "Y")
+        {
+            spdlog::info(">> aborted by user");
             return;
         }
+
+        spdlog::info(">> downloading build {}", m_Build);
 
         if (!depot.Fetch(m_Build, "./builds"))
         {
@@ -81,10 +105,10 @@ void App::Run(int32_t argc, char* argv[])
             return;
         }
 
-        spdlog::info("++ downloaded successfully to ./builds");
+        spdlog::info("++ download complete");
     }
 
-    const GameBuild game("./builds/" + std::to_string(m_Build) + ".exe");
+    const GameBuild game(buildPath.string());
     if (!game)
     {
         spdlog::info("!! failed to parse game build, please check again.");
@@ -96,11 +120,9 @@ void App::Run(int32_t argc, char* argv[])
     const auto bytes = game.GetBytesAtOffset(m_Offset);
 
     SigMaker sig;
-
-    // NOTE: currently size is hardcoded as 64 bytes, need to think about a way to generate sigs which are unique and short as possible
     sig.Scan(bytes.data(), bytes.size());
 
     std::string pattern = sig.GetPattern();
 
-    spdlog::info("++ pattern: {}", pattern.c_str());
+    spdlog::info("++ pattern: {}", pattern);
 }
