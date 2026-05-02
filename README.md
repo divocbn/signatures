@@ -4,6 +4,8 @@ A small C++23 tool for generating byte-pattern signatures from  GTA V game build
 
 It is mainly used for FiveM (Cfx.re) related reverse engineering tasks where offsets change between updates but underlying code patterns stay similar.
 
+Thanks to [Gogsi](https://github.com/Gogsi) for providing the gamebuild dumps and [DaniGP17](https://github.com/DaniGP17) for the inspiration from his tool [PatternV](https://github.com/DaniGP17/PatternV).
+
 ## How it works
 
 - Loads a specific GTA V build executable
