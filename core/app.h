@@ -9,7 +9,7 @@
 #include <string>
 
 #define SIGNATURES_VERSION_MAJOR 1
-#define SIGNATURES_VERSION_MINOR 1
+#define SIGNATURES_VERSION_MINOR 2
 #define SIGNATURES_VERSION_PATCH 0
 
 class App

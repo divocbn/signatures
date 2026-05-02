@@ -14,10 +14,14 @@ class Depot
 public:
     explicit Depot(std::string baseUrl);
 
+    [[nodiscard]]
     std::vector<uint32_t> GetList() const;
+
+    [[nodiscard]]
     bool Fetch(uint32_t build, const std::string& outDir = "builds") const;
 
 private:
+    [[nodiscard]]
     std::string Request(const std::string& url) const;
 
     std::string m_BaseUrl;
